@@ -9,6 +9,8 @@ services:
       - shared_network
     ports:
       - "6379:6379"
+    environment:
+      TZ: ${TZ}
     volumes:
       - ./redis.conf:/etc/redis/redis.conf
       - ${REDIS_DATA_LOCATION}/:/data
