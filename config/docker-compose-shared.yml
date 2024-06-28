@@ -3,7 +3,7 @@ name: shared
 services:
   redis:
     container_name: redis
-    image: docker.io/redis:alpine
+    image: docker.io/bitnami/redis
     restart: always
     networks:
       - shared_network
@@ -11,14 +11,10 @@ services:
       - "6379:6379"
     environment:
       TZ: ${TZ}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_VOLUME_DIR: /redis
     volumes:
-      - ${REDIS_DATA_LOCATION}/:/data
-    command:
-      [
-        "redis-server",
-        "--requirepass",
-        "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
-      ]
+      - ${REDIS_DATA_LOCATION}/:/redis/data
 
 networks:
   shared_network:
