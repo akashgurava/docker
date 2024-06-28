@@ -1,0 +1,20 @@
+name: shared
+
+services:
+  redis:
+    container_name: redis
+    image: docker.io/redis:alpine
+    restart: always
+    networks:
+      - shared_network
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+      - ${REDIS_DATA_LOCATION}/:/data
+    command: [ "redis-server", "/etc/redis/redis.conf" ]
+
+networks:
+  shared_network:
+    name: shared_network
+    driver: bridge
