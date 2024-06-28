@@ -12,9 +12,13 @@ services:
     environment:
       TZ: ${TZ}
     volumes:
-      - ./redis.conf:/etc/redis/redis.conf
       - ${REDIS_DATA_LOCATION}/:/data
-    command: [ "redis-server", "/etc/redis/redis.conf" ]
+    command:
+      [
+        "redis-server",
+        "--requirepass",
+        "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+      ]
 
 networks:
   shared_network:
