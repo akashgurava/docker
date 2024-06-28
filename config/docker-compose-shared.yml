@@ -28,11 +28,29 @@ services:
     environment:
       TZ: ${TZ}
       POSTGRES_INITDB_ARGS: '--data-checksums'
+      POSTGRES_USER: ${POSTGRES_SU_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_SU_PASSWORD}
-      POSTGRES_USER: $POSTGRES_SU_USERNAME}
       POSTGRES_DB: ${POSTGRES_SU_DATABASE_NAME}
     volumes:
       - ${POSTGRES_DATA_LOCATION}:/var/lib/postgresql/data/
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    labels:
+      - dev.orbstack.domains=pgadmin.local
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - shared_network
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    volumes:
+      - ${PGADMIN_DATA_LOCATION}:/var/lib/pgadmin/
 
 networks:
   shared_network:
